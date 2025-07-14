@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>हिंदी ब्लॉग लाइब्रेरी</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4a148c;
+            --secondary: #ff6f00;
+            --accent: #e91e63;
+            --light: #f5f5f5;
+            --dark: #212121;
+            --gray: #6c757d;
+            --overlay: rgba(0, 0, 0, 0.7);
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: 'Hind', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(to right, var(--primary), #7b1fa2);
+            color: white;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2.2rem;
+            color: var(--secondary);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        /* Hamburger Menu */
+        .hamburger-menu {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        .hamburger-menu span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            background: white;
+            margin: 2.5px 0;
+            border-radius: 3px;
+            transition: all 0.4s ease;
+        }
+
+        .hamburger-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: linear-gradient(160deg, var(--primary) 0%, #7b1fa2 100%);
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            padding: 100px 30px 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+
+        .nav-links {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-links li {
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.4s ease;
+        }
+
+        .sidebar.open .nav-links li {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .sidebar.open .nav-links li:nth-child(1) { transition-delay: 0.1s; }
+        .sidebar.open .nav-links li:nth-child(2) { transition-delay: 0.2s; }
+        .sidebar.open .nav-links li:nth-child(3) { transition-delay: 0.3s; }
+
+        .nav-links li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 600;
+            padding: 12px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(10px);
+        }
+
+        .nav-links li a i {
+            font-size: 1.8rem;
+            color: var(--secondary);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay);
+            z-index: 900;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(rgba(74, 20, 140, 0.9), rgba(74, 20, 140, 0.95)), url('https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3') no-repeat center/cover;
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .page-header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Library Tools */
+        .library-tools {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px 20px;
+            padding-left: 45px;
+            border-radius: 50px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 20px;
+            top: 14px;
+            color: var(--gray);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-toggle button {
+            background: white;
+            border: 1px solid #ddd;
+            color: var(--dark);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-toggle button.active, .view-toggle button:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .sort-filter {
+            display: flex;
+            gap: 15px;
+        }
+
+        .sort-filter select {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background: white;
+            font-size: 1rem;
+            min-width: 180px;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .library-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* Categories */
+        .categories {
+            flex: 0 0 250px;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+        }
+
+        .categories h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-list li {
+            margin-bottom: 12px;
+        }
+
+        .category-list li a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--dark);
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .category-list li a:hover, .category-list li a.active {
+            background: rgba(74, 20, 140, 0.1);
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .category-list li a span.count {
+            background: var(--light);
+            color: var(--gray);
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+        }
+
+        /* Blogs Grid */
+        .blogs-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .blog-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .blog-card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-img {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .blog-card:hover .card-img img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .category {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .card-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .card-content p {
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .author-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .author-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-info span:first-child {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .author-info span:last-child {
+            font-size: 0.85rem;
+            color: #777;
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 3rem 0;
+            gap: 8px;
+        }
+
+        .pagination button {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: none;
+            background: white;
+            color: var(--dark);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .pagination button:hover, .pagination button.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 2rem 1.5rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h3 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-col h3::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--secondary);
+        }
+
+        .footer-col p {
+            color: #bbb;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links li a {
+            color: #bbb;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .footer-links li a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+
+        .newsletter input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .newsletter input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .library-container {
+                flex-direction: column;
+            }
+            
+            .categories {
+                width: 100%;
+            }
+            
+            .blogs-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+            
+            .page-header h1 {
+                font-size: 2.4rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .library-tools {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-container {
+                max-width: 100%;
+                width: 100%;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .page-header p {
+                font-size: 1.1rem;
+            }
+            
+            .sort-filter {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .sort-filter select {
+                width: 48%;
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 576px) {
+            header {
+                padding: 1rem;
+            }
+            
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            
+            .page-header {
+                padding: 3rem 1rem;
+            }
+            
+            .page-header h1 {
+                font-size: 1.7rem;
+            }
+            
+            .page-header p {
+                font-size: 1rem;
+            }
+            
+            .blogs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pagination {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Hamburger Menu -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-book-open"></i>
+            <h1>हिंदी ब्लॉग लाइब्रेरी</h1>
+        </div>
+        
+        <div class="hamburger-menu" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+    
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <ul class="nav-links">
+            <li><a href="russian.html"><i class="fas fa-home"></i> होम</a></li>
+            <li><a href="blog library.html" class="active"><i class="fas fa-book-reader"></i> ब्लॉग लाइब्रेरी</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> हमारे बारे में</a></li>
+        </ul>
+    </div>
+    
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>हिंदी ब्लॉग्स का विशाल संग्रह</h1>
+        <p>विभिन्न श्रेणियों में हजारों हिंदी ब्लॉग्स का अन्वेषण करें और अपनी रुचि के विषयों को खोजें</p>
+    </section>
+    
+    <!-- Library Tools -->
+    <div class="library-tools">
+        <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="ब्लॉग खोजें..." id="search-input">
+        </div>
+        
+        <div class="view-toggle">
+            <button class="active" id="grid-view"><i class="fas fa-th"></i></button>
+            <button id="list-view"><i class="fas fa-list"></i></button>
+        </div>
+        
+        <div class="sort-filter">
+            <select id="sort-by">
+                <option value="latest">नवीनतम पहले</option>
+                <option value="popular">सबसे लोकप्रिय</option>
+                <option value="oldest">सबसे पुराने</option>
+            </select>
+            
+            <select id="filter-category">
+                <option value="all">सभी श्रेणियाँ</option>
+                <option value="technology">प्रौद्योगिकी</option>
+                <option value="health">स्वास्थ्य</option>
+                <option value="food">खाना</option>
+                <option value="travel">यात्रा</option>
+                <option value="education">शिक्षा</option>
+            </select>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="library-container">
+        <!-- Categories Section -->
+        <div class="categories">
+            <h3>श्रेणियाँ</h3>
+            <ul class="category-list">
+                <li><a href="#" class="active">सभी ब्लॉग्स <span class="count">125</span></a></li>
+                <li><a href="#">प्रौद्योगिकी <span class="count">32</span></a></li>
+                <li><a href="#">स्वास्थ्य <span class="count">28</span></a></li>
+                <li><a href="#">खाना <span class="count">24</span></a></li>
+                <li><a href="#">यात्रा <span class="count">18</span></a></li>
+                <li><a href="#">शिक्षा <span class="count">15</span></a></li>
+                <li><a href="#">व्यवसाय <span class="count">12</span></a></li>
+                <li><a href="#">मनोरंजन <span class="count">10</span></a></li>
+                <li><a href="#">राजनीति <span class="count">8</span></a></li>
+                <li><a href="#">खेल <span class="count">6</span></a></li>
+            </ul>
+        </div>
+        
+        <!-- Blogs Grid -->
+        <div class="blogs-grid" id="blogs-container">
+            <!-- Blog Card 1 -->
+            <div class="blog-card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&auto=format&fit=crop&w=800" alt="Blog Image">
+                </div>
+                <div class="card-content">
+                    <span class="category">प्रौद्योगिकी</span>
+                    <h3>भारत में 5G क्रांति: क्या बदलेगा?</h3>
+                    <p>5G तकनीक भारत के डिजिटल भविष्य को कैसे बदलने वाली है और इसके क्या फायदे होंगे...</p>
+                    <div class="card-footer">
+                        <div class="author">
+                            <div class="author-img">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Author">
+                            </div>
+                            <div class="author-info">
+                                <span>राजेश शर्मा</span>
+                                <span>2 घंटे पहले</span>
+                            </div>
+                        </div>
+                        <div class="stats">
+                            <div class="stat"><i class="fas fa-eye"></i> 1.2K</div>
+                            <div class="stat"><i class="fas fa-heart"></i> 245</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Blog Card 2 -->
+            <div class="blog-card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=800" alt="Blog Image">
+                </div>
+                <div class="card-content">
+                    <span class="category">खाना</span>
+                    <h3>उत्तर भारतीय व्यंजनों का जादू</h3>
+                    <p>पंजाब से लेकर कश्मीर तक के स्वादिष्ट व्यंजनों की यात्रा और उनकी विशेषताएं...</p>
+                    <div class="card-footer">
+                        <div class="author">
+                            <div class="author-img">
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Author">
+                            </div>
+                            <div class="author-info">
+                                <span>प्रिया सिंह</span>
+                                <span>1 दिन पहले</span>
+                            </div>
+                        </div>
+                        <div class="stats">
+                            <div class="stat"><i class="fas fa-eye"></i> 3.4K</div>
+                            <div class="stat"><i class="fas fa-heart"></i> 568</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Blog Card 3 -->
+            <div class="blog-card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1542744095-291d1f67b221?ixlib=rb-4.0.3&auto=format&fit=crop&w=800" alt="Blog Image">
+                </div>
+                <div class="card-content">
+                    <span class="category">स्वास्थ्य</span>
+                    <h3>योग: प्राचीन विज्ञान आधुनिक जीवन के लिए</h3>
+                    <p>कैसे रोजाना 20 मिनट का योग आपके जीवन को पूरी तरह बदल सकता है...</p>
+                    <div class="card-footer">
+                        <div class="author">
+                            <div class="author-img">
+                                <img src="https://randomuser.me/api/portraits/men/62.jpg" alt="Author">
+                            </div>
+                            <div class="author-info">
+                                <span>विकास यादव</span>
+                                <span>3 दिन पहले</span>
+                            </div>
+                        </div>
+                        <div class="stats">
+                            <div class="stat"><i class="fas fa-eye"></i> 5.7K</div>
+                            <div class="stat"><i class="fas fa-heart"></i> 1.2K</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Blog Card 4 -->
+            <div class="blog-card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800" alt="Blog Image">
+                </div>
+                <div class="card-content">
+                    <span class="category">यात्रा</span>
+                    <h3>हिमाचल के छिपे हुए रहस्य</h3>
+                    <p>हिमाचल प्रदेश के कम ज्ञात लेकिन अद्भुत पर्यटन स्थलों की खोज...</p>
+                    <div class="card-footer">
+                        <div class="author">
+                            <div class="author-img">
+                                <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Author">
+                            </div>
+                            <div class="author-info">
+                                <span>अरुण कुमार</span>
+                                <span>5 दिन पहले</span>
+                            </div>
+                        </div>
+                        <div class="stats">
+                            <div class="stat"><i class="fas fa-eye"></i> 4.1K</div>
+                            <div class="stat"><i class="fas fa-heart"></i> 876</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Blog Card 5 -->
+            <div class="blog-card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800" alt="Blog Image">
+                </div>
+                <div class="card-content">
+                    <span class="category">शिक्षा</span>
+                    <h3>भारत में ऑनलाइन शिक्षा का भविष्य</h3>
+                    <p>कोविड के बाद भारत में ऑनलाइन शिक्षा कैसे बदल रही है और क्या हैं चुनौतियाँ...</p>
+                    <div class="card-footer">
+                        <div class="author">
+                            <div class="author-img">
+                                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Author">
+                            </div>
+                            <div class="author-info">
+                                <span>नीतू शर्मा</span>
+                                <span>1 सप्ताह पहले</span>
+                            </div>
+                        </div>
+                        <div class="stats">
+                            <div class="stat"><i class="fas fa-eye"></i> 2.8K</div>
+                            <div class="stat"><i class="fas fa-heart"></i> 542</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Blog Card 6 -->
+            <div class="blog-card">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800" alt="Blog Image">
+                </div>
+                <div class="card-content">
+                    <span class="category">व्यवसाय</span>
+                    <h3>स्टार्टअप सफलता के 10 सूत्र</h3>
+                    <p>भारत में सफल स्टार्टअप शुरू करने के लिए महत्वपूर्ण टिप्स और रणनीतियाँ...</p>
+                    <div class="card-footer">
+                        <div class="author">
+                            <div class="author-img">
+                                <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Author">
+                            </div>
+                            <div class="author-info">
+                                <span>राहुल मेहता</span>
+                                <span>2 सप्ताह पहले</span>
+                            </div>
+                        </div>
+                        <div class="stats">
+                            <div class="stat"><i class="fas fa-eye"></i> 6.3K</div>
+                            <div class="stat"><i class="fas fa-heart"></i> 1.5K</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pagination -->
+    <div class="pagination">
+        <button><i class="fas fa-chevron-left"></i></button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>5</button>
+        <button><i class="fas fa-chevron-right"></i></button>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>हिंदी ब्लॉग लाइब्रेरी</h3>
+                <p>हिंदी भाषा में गुणवत्तापूर्ण सामग्री को बढ़ावा देने के लिए समर्पित मंच।</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h3>लिंक</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> होम</a></li>
+                    <li><a href="library.html"><i class="fas fa-chevron-right"></i> ब्लॉग लाइब्रेरी</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> ट्रेंडिंग ब्लॉग</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> लेखक बनें</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>श्रेणियाँ</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> प्रौद्योगिकी</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> स्वास्थ्य</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> खाना</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> यात्रा</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>न्यूज़लेटर</h3>
+                <p>नवीनतम ब्लॉग्स और अपडेट प्राप्त करने के लिए सदस्यता लें।</p>
+                <div class="newsletter">
+                    <input type="email" placeholder="आपका ईमेल">
+                    <button class="btn btn-primary">सब्सक्राइब</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>© 2023 हिंदी ब्लॉग लाइब्रेरी. सर्वाधिकार सुरक्षित।</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const hamburger = document.getElementById('hamburger');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            
+            hamburger.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+            
+            // View Toggle Functionality
+            const gridViewBtn = document.getElementById('grid-view');
+            const listViewBtn = document.getElementById('list-view');
+            const blogsContainer = document.getElementById('blogs-container');
+            
+            gridViewBtn.addEventListener('click', () => {
+                blogsContainer.classList.remove('list-view');
+                gridViewBtn.classList.add('active');
+                listViewBtn.classList.remove('active');
+            });
+            
+            listViewBtn.addEventListener('click', () => {
+                blogsContainer.classList.add('list-view');
+                listViewBtn.classList.add('active');
+                gridViewBtn.classList.remove('active');
+            });
+            
+            // Category Filter Functionality
+            const categoryLinks = document.querySelectorAll('.category-list li a');
+            
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    categoryLinks.forEach(item => item.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    // In a real app, you would filter blogs here
+                    alert(`श्रेणी फ़िल्टर: ${link.textContent.split(' ')[0]}`);
+                });
+            });
+            
+            // Sort Functionality
+            const sortSelect = document.getElementById('sort-by');
+            
+            sortSelect.addEventListener('change', () => {
+                alert(`छँटाई: ${sortSelect.options[sortSelect.selectedIndex].text}`);
+            });
+            
+            // Filter by Category Functionality
+            const filterSelect = document.getElementById('filter-category');
+            
+            filterSelect.addEventListener('change', () => {
+                alert(`फ़िल्टर: ${filterSelect.options[filterSelect.selectedIndex].text}`);
+            });
+            
+            // Search Functionality
+            const searchInput = document.getElementById('search-input');
+            const searchIcon = document.querySelector('.search-container i');
+            
+            searchIcon.addEventListener('click', () => {
+                if (searchInput.value.trim() !== '') {
+                    alert(`खोज: "${searchInput.value}"`);
+                }
+            });
+            
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && searchInput.value.trim() !== '') {
+                    alert(`खोज: "${searchInput.value}"`);
+                }
+            });
+            
+            // Pagination Functionality
+            const paginationBtns = document.querySelectorAll('.pagination button');
+            
+            paginationBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (btn.textContent !== '') {
+                        paginationBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                    }
+                });
+            });
+            
+            // Animate blog cards on scroll
+            const blogCards = document.querySelectorAll('.blog-card');
+            
+            const animateOnScroll = function() {
+                blogCards.forEach(card => {
+                    const cardPosition = card.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight * 0.8;
+                    
+                    if (cardPosition < screenPosition) {
+                        card.classList.add('animate');
+                    }
+                });
+            };
+            
+            // Initial animation trigger
+            animateOnScroll();
+            
+            // Trigger animations on scroll
+            window.addEventListener('scroll', animateOnScroll);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>हमारे बारे में - हिंदी ब्लॉग</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4a148c;
+            --secondary: #ff6f00;
+            --accent: #e91e63;
+            --light: #f5f5f5;
+            --dark: #212121;
+            --overlay: rgba(0, 0, 0, 0.7);
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: 'Hind', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(to right, var(--primary), #7b1fa2);
+            color: white;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2.2rem;
+            color: var(--secondary);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        /* Hamburger Menu */
+        .hamburger-menu {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        .hamburger-menu span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            background: white;
+            margin: 2.5px 0;
+            border-radius: 3px;
+            transition: all 0.4s ease;
+        }
+
+        .hamburger-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: linear-gradient(160deg, var(--primary) 0%, #7b1fa2 100%);
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            padding: 100px 30px 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+
+        .nav-links {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-links li {
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.4s ease;
+        }
+
+        .sidebar.open .nav-links li {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .sidebar.open .nav-links li:nth-child(1) { transition-delay: 0.1s; }
+        .sidebar.open .nav-links li:nth-child(2) { transition-delay: 0.2s; }
+        .sidebar.open .nav-links li:nth-child(3) { transition-delay: 0.3s; }
+
+        .nav-links li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 600;
+            padding: 12px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(10px);
+        }
+
+        .nav-links li a i {
+            font-size: 1.8rem;
+            color: var(--secondary);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay);
+            z-index: 900;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(rgba(74, 20, 140, 0.9), rgba(74, 20, 140, 0.95)), url('https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3') no-repeat center/cover;
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .page-header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* About Content */
+        .about-content {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-text h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .about-text h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .team-members {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 3rem;
+        }
+
+        .team-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .member-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            border: 5px solid var(--light);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .member-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .team-card p.position {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .team-card p.bio {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-links a {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Bomb Blast Animation */
+        .bomb-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .bomb-container.active {
+            opacity: 1;
+        }
+
+        .bomb {
+            width: 100px;
+            height: 100px;
+            background: #333;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        .bomb::before {
+            content: "";
+            position: absolute;
+            top: -15px;
+            width: 20px;
+            height: 30px;
+            background: #666;
+            border-radius: 5px;
+        }
+
+        .bomb-fuse {
+            position: absolute;
+            top: -50px;
+            width: 5px;
+            height: 50px;
+            background: linear-gradient(to top, #ff6f00, #ff0000);
+            animation: burn 2s linear forwards;
+            transform-origin: bottom;
+        }
+
+        .explosion {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #ff6f00, #ff0000);
+            border-radius: 50%;
+            opacity: 0;
+            animation: explode 0.5s 2s forwards;
+        }
+
+        .shockwave {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border: 2px solid rgba(255, 111, 0, 0.8);
+            border-radius: 50%;
+            opacity: 0;
+            animation: shockwave 1s 2.3s forwards;
+        }
+
+        .debris {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff6f00;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        @keyframes burn {
+            0% { height: 50px; }
+            100% { height: 0; }
+        }
+
+        @keyframes explode {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(20); opacity: 0; }
+        }
+
+        @keyframes shockwave {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(30); opacity: 0; }
+        }
+
+        /* Special Button */
+        .danger-zone {
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .danger-btn {
+            padding: 15px 30px;
+            background: linear-gradient(to right, #ff0000, #ff6f00);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .danger-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 0, 0, 0.4);
+        }
+
+        .danger-btn::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0.3) 0%,
+                rgba(255, 255, 255, 0) 60%
+            );
+            transform: rotate(30deg);
+            transition: all 0.3s ease;
+        }
+
+        .danger-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 2rem 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h3 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-col h3::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--secondary);
+        }
+
+        .footer-col p {
+            color: #bbb;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links li a {
+            color: #bbb;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .footer-links li a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+
+        .newsletter input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .newsletter input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .page-header h1 {
+                font-size: 2.4rem;
+            }
+            
+            .about-text h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 4rem 1.5rem;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .page-header p {
+                font-size: 1.1rem;
+            }
+            
+            .about-content {
+                padding: 0 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            header {
+                padding: 1rem;
+            }
+            
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            
+            .page-header {
+                padding: 3rem 1rem;
+            }
+            
+            .page-header h1 {
+                font-size: 1.7rem;
+            }
+            
+            .page-header p {
+                font-size: 1rem;
+            }
+            
+            .about-text {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Hamburger Menu -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-info-circle"></i>
+            <h1>हमारे बारे में</h1>
+        </div>
+        
+        <div class="hamburger-menu" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+    
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <ul class="nav-links">
+            <li><a href="russian.html"><i class="fas fa-home"></i> होम</a></li>
+            <li><a href="blog library.html"><i class="fas fa-book-reader"></i> ब्लॉग लाइब्रेरी</a></li>
+            <li><a href="about.html" class="active"><i class="fas fa-info-circle"></i> हमारे बारे में</a></li>
+        </ul>
+    </div>
+    
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Bomb Blast Animation -->
+    <div class="bomb-container" id="bombContainer">
+        <div class="bomb">
+            <div class="bomb-fuse"></div>
+            <div class="explosion"></div>
+            <div class="shockwave"></div>
+        </div>
+    </div>
+    
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>हमारी कहानी</h1>
+        <p>हिंदी ब्लॉगिंग को बढ़ावा देने के लिए हमारी यात्रा और हमारी टीम के बारे में जानें</p>
+    </section>
+    
+    <!-- About Content -->
+    <div class="about-content">
+        <div class="about-text">
+            <h2>हम कौन हैं?</h2>
+            <p>हिंदी ब्लॉग एक ऐसा मंच है जो हिंदी भाषा में गुणवत्तापूर्ण सामग्री को बढ़ावा देने के लिए समर्पित है। हमारी स्थापना 2020 में हुई थी जब हमने देखा कि हिंदी में अच्छी सामग्री की कमी है, विशेषकर तकनीकी और शैक्षिक विषयों पर।</p>
+            
+            <p>हमारा मिशन हिंदी भाषियों के लिए ज्ञानवर्धक, मनोरंजक और प्रेरणादायक सामग्री प्रदान करना है। हम विभिन्न विषयों पर विशेषज्ञ लेखकों के साथ काम करते हैं ताकि पाठकों को सर्वोत्तम जानकारी मिल सके।</p>
+            
+            <h2 style="margin-top: 2rem;">हमारा दृष्टिकोण</h2>
+            <p>हम मानते हैं कि भाषा ज्ञान तक पहुँच में बाधा नहीं होनी चाहिए। हमारा लक्ष्य हिंदी भाषा में उच्च गुणवत्ता वाली सामग्री प्रदान करके इस अंतर को पाटना है।</p>
+            
+            <div class="danger-zone">
+                <button class="danger-btn" id="dangerBtn">
+                    <i class="fas fa-bomb"></i> खतरनाक बटन मत दबाएं!
+                </button>
+            </div>
+        </div>
+        
+        <div class="team-members">
+            <div class="team-card">
+                <div class="member-img">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Team Member">
+                </div>
+                <h3>राजेश शर्मा</h3>
+                <p class="position">संस्थापक एवं सीईओ</p>
+                <p class="bio">10+ वर्षों का अनुभव, तकनीकी लेखन में विशेषज्ञता</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            
+            <div class="team-card">
+                <div class="member-img">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Team Member">
+                </div>
+                <h3>प्रिया सिंह</h3>
+                <p class="position">संपादक</p>
+                <p class="bio">साहित्य और भाषा में पृष्ठभूमि, गुणवत्ता नियंत्रण की प्रमुख</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            
+            <div class="team-card">
+                <div class="member-img">
+                    <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Team Member">
+                </div>
+                <h3>विकास यादव</h3>
+                <p class="position">तकनीकी प्रमुख</p>
+                <p class="bio">वेब विकास और डिजिटल मार्केटिंग में विशेषज्ञ</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>हिंदी ब्लॉग</h3>
+                <p>हिंदी भाषा में गुणवत्तापूर्ण सामग्री को बढ़ावा देने के लिए समर्पित मंच।</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h3>लिंक</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> होम</a></li>
+                    <li><a href="library.html"><i class="fas fa-chevron-right"></i> ब्लॉग लाइब्रेरी</a></li>
+                    <li><a href="about.html"><i class="fas fa-chevron-right"></i> हमारे बारे में</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> संपर्क करें</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>श्रेणियाँ</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> प्रौद्योगिकी</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> स्वास्थ्य</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> खाना</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> यात्रा</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>न्यूज़लेटर</h3>
+                <p>नवीनतम ब्लॉग्स और अपडेट प्राप्त करने के लिए सदस्यता लें।</p>
+                <div class="newsletter">
+                    <input type="email" placeholder="आपका ईमेल">
+                    <button class="btn btn-primary">सब्सक्राइब</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>© 2023 हिंदी ब्लॉग. सर्वाधिकार सुरक्षित।</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const hamburger = document.getElementById('hamburger');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            
+            hamburger.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+            
+            // Close sidebar when clicking a link
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                    hamburger.classList.remove('active');
+                });
+            });
+            
+            // Bomb blast animation
+            const dangerBtn = document.getElementById('dangerBtn');
+            const bombContainer = document.getElementById('bombContainer');
+            
+            dangerBtn.addEventListener('click', function() {
+                // Show bomb container
+                bombContainer.classList.add('active');
+                
+                // Create debris elements
+                for (let i = 0; i < 20; i++) {
+                    const debris = document.createElement('div');
+                    debris.className = 'debris';
+                    debris.style.left = Math.random() * 100 + 'vw';
+                    debris.style.top = Math.random() * 100 + 'vh';
+                    debris.style.animation = `debris-fall ${Math.random() * 2 + 1}s ${Math.random() * 0.5}s forwards`;
+                    
+                    // Add random styles
+                    debris.style.width = Math.random() * 10 + 5 + 'px';
+                    debris.style.height = Math.random() * 10 + 5 + 'px';
+                    debris.style.background = `hsl(${Math.random() * 30 + 20}, 100%, 50%)`;
+                    
+                    bombContainer.appendChild(debris);
+                }
+                
+                // Hide after animation completes
+                setTimeout(() => {
+                    bombContainer.classList.remove('active');
+                    
+                    // Remove debris elements
+                    const debrisElements = document.querySelectorAll('.debris');
+                    debrisElements.forEach(el => el.remove());
+                }, 3000);
+            });
+            
+            // Add debris animation dynamically
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes debris-fall {
+                    0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+                    100% { transform: translate(${Math.random() * 200 - 100}px, 100vh) rotate(360deg); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
